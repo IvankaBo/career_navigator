@@ -1,0 +1,447 @@
+```html
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitální Kalkulačka Veřejné Správy</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #c7d2fe 100%);
+            min-height: 100vh;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const PublicServiceFutureScanner = () => {
+            const [currentStep, setCurrentStep] = useState(1);
+            const [selectedJob, setSelectedJob] = useState('');
+            const [skillLevel, setSkillLevel] = useState('');
+
+            useEffect(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, [currentStep]);
+
+            const jobData = {
+                'starosta': {
+                    name: 'Starosta/Primátor',
+                    category: 'Politické vedení',
+                    icon: '👑',
+                    automationRisk: { min: 15, max: 35 },
+                    opportunityScore: { min: 65, max: 85 },
+                    changePercentage: { min: 30, max: 50 },
+                    timeframe: '8-12 let',
+                    level: 'opportunity',
+                    description: 'Politické vedení zůstane lidské, ale způsoby rozhodování se změní',
+                    risks: [
+                        'Občané budou očekávat modernější digitální služby',
+                        'Konkurenti s digitálními dovednostmi získají výhodu',
+                        'Ztráta kredibility při zaostávání za trendy'
+                    ],
+                    opportunities: [
+                        'Lepší rozhodování na základě dat',
+                        'Efektivnější komunikace s občany',
+                        'Transparentnější správa věcí veřejných'
+                    ],
+                    futureSkills: {
+                        beginner: [
+                            { skill: 'Základy práce s daty', timeToLearn: '1-2 měsíce', quickWin: 'Začni používat Google Analytics pro web města' },
+                            { skill: 'Online komunikace', timeToLearn: '2-3 týdny', quickWin: 'Aktivní Facebook účet města' }
+                        ],
+                        advanced: [
+                            { skill: 'AI nástroje pro analýzu', timeToLearn: '3-4 měsíce', quickWin: 'Používej ChatGPT pro přípravu projevů' },
+                            { skill: 'Smart city technologie', timeToLearn: '4-6 měsíců', quickWin: 'Navštiv konferenci o smart cities' }
+                        ]
+                    },
+                    protectiveSkills: ['Politická intuice', 'Charisma', 'Strategická vize']
+                },
+                'referent': {
+                    name: 'Referent/Úředník',
+                    category: 'Operativní úroveň',
+                    icon: '📋',
+                    automationRisk: { min: 60, max: 80 },
+                    opportunityScore: { min: 20, max: 40 },
+                    changePercentage: { min: 60, max: 85 },
+                    timeframe: '2-5 let',
+                    level: 'risk',
+                    description: 'Rutinní úkoly se automatizují - nutnost adaptace',
+                    risks: [
+                        'Rutinní pozice mohou být automatizovány',
+                        'Bez nových dovedností riziko ztráty relevance',
+                        'Konkurence od lidí s digitálními kompetencemi'
+                    ],
+                    opportunities: [
+                        'Přesun k poradenské činnosti',
+                        'Více času na kreativní práci',
+                        'Specializace s vyšší přidanou hodnotou'
+                    ],
+                    futureSkills: {
+                        beginner: [
+                            { skill: 'Základní AI asistenti', timeToLearn: '2-4 týdny', quickWin: 'Použij AI pro úpravu dokumentu' },
+                            { skill: 'Pokročilá práce s databázemi', timeToLearn: '1-2 měsíce', quickWin: 'Vytvoř 3 užitečné filtry' }
+                        ],
+                        advanced: [
+                            { skill: 'Supervize automatizovaných procesů', timeToLearn: '3-6 měsíců', quickWin: 'Kontrola výstupů AI nástrojů' },
+                            { skill: 'Analytické myšlení', timeToLearn: '4-6 měsíců', quickWin: 'Analyzuj 1 složitý případ' }
+                        ]
+                    },
+                    protectiveSkills: ['Empatie', 'Kritické myšlení', 'Adaptabilita']
+                },
+                'vedouci-odboru': {
+                    name: 'Vedoucí odboru',
+                    category: 'Střední management',
+                    icon: '📊',
+                    automationRisk: { min: 40, max: 60 },
+                    opportunityScore: { min: 40, max: 60 },
+                    changePercentage: { min: 50, max: 80 },
+                    timeframe: '3-6 let',
+                    level: 'balanced',
+                    description: 'Rutinní řízení se automatizuje, prostor pro strategii',
+                    risks: [
+                        'Digitálně zdatní vedoucí budou efektivnější',
+                        'Zaostávání za ostatními odbory',
+                        'Ztráta nejlepších zaměstnanců'
+                    ],
+                    opportunities: [
+                        'Dramatické zvýšení produktivity týmu',
+                        'Více času na strategické úkoly',
+                        'Postavení inovativního lídra'
+                    ],
+                    futureSkills: {
+                        beginner: [
+                            { skill: 'Digitální týmová spolupráce', timeToLearn: '2-4 týdny', quickWin: 'Online meetingy týmu' },
+                            { skill: 'Základy automatizace', timeToLearn: '1-2 měsíce', quickWin: 'Identifikuj 1 proces k zjednodušení' }
+                        ],
+                        advanced: [
+                            { skill: 'Pokročilá automatizace', timeToLearn: '4-6 měsíců', quickWin: 'Pilotní automatizace agendy' },
+                            { skill: 'Analytics týmu', timeToLearn: '3-5 měsíců', quickWin: 'Dashboard s metrikami' }
+                        ]
+                    },
+                    protectiveSkills: ['Emoční inteligence', 'Systémové myšlení', 'Leadership']
+                }
+            };
+
+            const skillLevels = {
+                'beginner': {
+                    name: 'Začátečník',
+                    icon: '🌱',
+                    description: 'Základní digitální gramotnost'
+                },
+                'advanced': {
+                    name: 'Pokročilý',
+                    icon: '🚀',
+                    description: 'Už používám digitální nástroje'
+                }
+            };
+
+            const currentJob = jobData[selectedJob];
+            const currentSkillLevel = skillLevels[skillLevel];
+
+            const handleJobSelect = (job) => {
+                setSelectedJob(job);
+                setCurrentStep(2);
+            };
+
+            const handleSkillLevelSelect = (level) => {
+                setSkillLevel(level);
+                setCurrentStep(3);
+            };
+
+            const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
+            const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+
+            const JobSelectionStep = () => (
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                    <div className="text-center mb-6">
+                        <div className="text-6xl mb-4">🏛️</div>
+                        <h2 className="text-3xl font-bold text-gray-800 mb-4">Vyberte vaši pozici</h2>
+                        <p className="text-gray-600">Kde se nacházíte ve veřejné správě?</p>
+                    </div>
+                    
+                    <div className="space-y-4 max-w-2xl mx-auto">
+                        {Object.entries(jobData).map(([key, job]) => (
+                            <button
+                                key={key}
+                                onClick={() => handleJobSelect(key)}
+                                className="w-full p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className="text-3xl">{job.icon}</div>
+                                    <div>
+                                        <div className="font-bold text-lg">{job.name}</div>
+                                        <div className="text-sm text-gray-600">{job.category}</div>
+                                    </div>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            const SkillLevelStep = () => (
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                    <div className="text-center mb-6">
+                        <div className="text-6xl mb-4">🎯</div>
+                        <h2 className="text-3xl font-bold text-gray-800 mb-4">Vaše zkušenosti</h2>
+                        <p className="text-gray-600 mb-2">Pozice: <strong>{currentJob.name}</strong></p>
+                        <p className="text-gray-600">Jaká je vaše úroveň s digitálními nástroji?</p>
+                    </div>
+                    
+                    <div className="space-y-4 max-w-lg mx-auto">
+                        {Object.entries(skillLevels).map(([key, level]) => (
+                            <button
+                                key={key}
+                                onClick={() => handleSkillLevelSelect(key)}
+                                className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all text-center"
+                            >
+                                <div className="text-6xl mb-4">{level.icon}</div>
+                                <div className="font-bold text-2xl text-gray-800 mb-3">{level.name}</div>
+                                <p className="text-gray-600 text-sm">{level.description}</p>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            const RiskOpportunityStep = () => (
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                    <div className="text-center mb-6">
+                        <div className="text-6xl mb-4">⚖️</div>
+                        <h2 className="text-3xl font-bold text-gray-800 mb-4">Rizika vs Příležitosti</h2>
+                        <p className="text-gray-600">Pozice: <strong>{currentJob.name}</strong></p>
+                    </div>
+
+                    <div className="mb-8">
+                        <div className="relative max-w-lg mx-auto">
+                            <div className="flex bg-gray-200 rounded-full h-6">
+                                <div 
+                                    className="bg-red-500 h-6 rounded-l-full transition-all duration-2000"
+                                    style={{ width: `${(currentJob.automationRisk.min + currentJob.automationRisk.max) / 2}%` }}
+                                ></div>
+                                <div 
+                                    className="bg-green-500 h-6 rounded-r-full transition-all duration-2000"
+                                    style={{ width: `${(currentJob.opportunityScore.min + currentJob.opportunityScore.max) / 2}%` }}
+                                ></div>
+                            </div>
+                            <div className="flex justify-between mt-2 text-sm font-semibold">
+                                <span className="text-red-600">
+                                    {currentJob.automationRisk.min}-{currentJob.automationRisk.max}% riziko
+                                </span>
+                                <span className="text-green-600">
+                                    {currentJob.opportunityScore.min}-{currentJob.opportunityScore.max}% příležitost
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="text-center mt-6">
+                            <div className={`inline-block px-4 py-2 rounded-full font-bold border-2 ${
+                                currentJob.level === 'risk' ? 'text-red-600 bg-red-100 border-red-300' :
+                                currentJob.level === 'balanced' ? 'text-orange-600 bg-orange-100 border-orange-300' :
+                                'text-green-600 bg-green-100 border-green-300'
+                            }`}>
+                                {currentJob.level === 'risk' ? 'NUTNOST ADAPTACE' :
+                                 currentJob.level === 'balanced' ? 'VYVÁŽENÉ RIZIKO' :
+                                 'VELKÁ PŘÍLEŽITOST'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-6">
+                        <div>
+                            <h3 className="text-lg font-semibold mb-4 text-red-600">⚠️ Rizika bez adaptace</h3>
+                            <div className="space-y-2">
+                                {currentJob.risks.map((risk, index) => (
+                                    <div key={index} className="flex items-start gap-2 p-3 bg-red-50 rounded-lg">
+                                        <div className="text-red-500 text-sm">⚠️</div>
+                                        <span className="text-red-800 text-sm">{risk}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-lg font-semibold mb-4 text-green-600">🚀 Příležitosti s adaptací</h3>
+                            <div className="space-y-2">
+                                {currentJob.opportunities.map((opportunity, index) => (
+                                    <div key={index} className="flex items-start gap-2 p-3 bg-green-50 rounded-lg">
+                                        <div className="text-green-500 text-sm">🚀</div>
+                                        <span className="text-green-800 text-sm">{opportunity}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                        <div className="text-center">
+                            <div className="font-semibold text-blue-800">⏰ Časový horizont: {currentJob.timeframe}</div>
+                            <div className="text-sm text-blue-700 mt-2">{currentJob.description}</div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const ActionPlanStep = () => (
+                <div className="space-y-6">
+                    <div className={`${
+                        currentJob.level === 'risk' ? 'bg-gradient-to-r from-red-600 to-orange-600' :
+                        currentJob.level === 'balanced' ? 'bg-gradient-to-r from-orange-600 to-blue-600' :
+                        'bg-gradient-to-r from-green-600 to-blue-600'
+                    } text-white rounded-xl shadow-lg p-6`}>
+                        <div className="text-center mb-6">
+                            <div className="text-6xl mb-4">
+                                {currentJob.level === 'risk' ? '🚨' : currentJob.level === 'balanced' ? '⚖️' : '🎯'}
+                            </div>
+                            <h2 className="text-3xl font-bold mb-4">Váš akční plán</h2>
+                            <p className="opacity-90">
+                                {currentJob.level === 'risk' ? 'Urgentní adaptace' :
+                                 currentJob.level === 'balanced' ? 'Vyvážený přístup' :
+                                 'Strategická příležitost'}
+                            </p>
+                        </div>
+                        
+                        <div className="text-center p-4 bg-white bg-opacity-10 rounded-xl">
+                            <div className="text-3xl mb-2">
+                                {currentJob.level === 'risk' ? '🏃‍♂️' : '🚀'}
+                            </div>
+                            <h3 className="font-bold text-xl mb-2">
+                                {currentJob.level === 'risk' ? 'Začni HNED' : 'Začni strategicky'}
+                            </h3>
+                            <p className="text-sm opacity-90">
+                                {currentJob.level === 'risk' 
+                                    ? 'Čas je kritický - zkuste Quick Win ještě dnes!'
+                                    : 'Máte čas na strategické učení - využijte příležitost!'
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-lg p-6">
+                        <h3 className="text-xl font-semibold mb-4">
+                            💪 Co se naučit ({currentSkillLevel.name} {currentSkillLevel.icon})
+                        </h3>
+                        <div className="space-y-4">
+                            {currentJob.futureSkills[skillLevel].map((item, index) => (
+                                <div key={index} className="p-4 rounded-lg border bg-purple-50">
+                                    <div className="font-semibold text-purple-800 mb-2">{item.skill}</div>
+                                    <div className="text-sm text-purple-600 mb-2">⏱ {item.timeToLearn}</div>
+                                    <div className="bg-white p-2 rounded border">
+                                        <div className="text-sm font-medium text-green-700 mb-1">💪 Quick Win:</div>
+                                        <div className="text-sm text-gray-700">{item.quickWin}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-6 p-4 bg-green-50 rounded-lg">
+                            <h4 className="font-semibold text-gray-800 mb-3">🛡️ Vaše trvalé výhody:</h4>
+                            <div className="flex flex-wrap gap-2">
+                                {currentJob.protectiveSkills.map((skill, index) => (
+                                    <span key={index} className="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-lg p-4">
+                        <p className="text-xs text-gray-600">
+                            <strong>Zdroje:</strong> World Economic Forum, OECD Digital Government, Digitální agenda ČR. 
+                            Predikce jsou orientační a slouží jako vodítko pro plánování.
+                        </p>
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="gradient-bg p-6">
+                    <div className="max-w-4xl mx-auto">
+                        <header className="text-center mb-6">
+                            <h1 className="text-5xl font-bold text-gray-800 mb-4">
+                                ⚖️ Digitální Kalkulačka Veřejné Správy
+                            </h1>
+                            <p className="text-xl text-gray-600 mb-6">
+                                Realistické zhodnocení rizik a příležitostí
+                            </p>
+                            
+                            <div className="max-w-md mx-auto mb-6">
+                                <div className="flex items-center justify-between mb-2">
+                                    {[1, 2, 3, 4].map((step) => (
+                                        <div
+                                            key={step}
+                                            className={`w-8 h-8 rounded-full font-bold text-sm flex items-center justify-center ${
+                                                step <= currentStep ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-400'
+                                            }`}
+                                        >
+                                            {step}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                    <div 
+                                        className="h-full bg-blue-600 transition-all duration-500"
+                                        style={{ width: `${(currentStep / 4) * 100}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+                        </header>
+
+                        {currentStep === 1 && <JobSelectionStep />}
+                        {currentStep === 2 && selectedJob && <SkillLevelStep />}
+                        {currentStep === 3 && selectedJob && skillLevel && <RiskOpportunityStep />}
+                        {currentStep === 4 && selectedJob && skillLevel && <ActionPlanStep />}
+
+                        {currentStep > 1 && (
+                            <div className="flex justify-between items-center mt-6">
+                                <button
+                                    onClick={prevStep}
+                                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                                >
+                                    ← Zpět
+                                </button>
+                                
+                                {currentStep < 4 ? (
+                                    <button
+                                        onClick={nextStep}
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                    >
+                                        Další →
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => {setCurrentStep(1); setSelectedJob(''); setSkillLevel('');}}
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                    >
+                                        🔄 Nová analýza
+                                    </button>
+                                )}
+                            </div>
+                        )}
+
+                        <div className="text-center mt-8 pt-6 border-t border-gray-200">
+                            <p className="text-xs text-gray-500">
+                                Vytvořeno s AI pro školení o digitalizaci • {new Date().getFullYear()}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<PublicServiceFutureScanner />, document.getElementById('root'));
+    </script>
+</body>
+</html>
